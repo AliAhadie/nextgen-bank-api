@@ -30,13 +30,25 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'drf_spectacular',
+]
+
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+INSTALLED_APPS = [
+    *DJANGO_APPS,
+    *THIRD_PARTY_APPS,
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +145,6 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Custom user model
+AUTH_USER_MODEL = 'auth.User'
