@@ -8,6 +8,7 @@ def send_activation_email(id):
     message = {
         'subject': 'Activate your account',
         'message': f'Click the link to activate your account: {activate_url}',
+        
 
     }
 

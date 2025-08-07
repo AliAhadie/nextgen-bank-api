@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
+from rest_framework.validators import ValidationError
 User = get_user_model()
 class BaseUserSerializer(serializers.ModelSerializer):
     """Base serializer for the User model."""
@@ -41,3 +41,8 @@ class CreateUserSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         fields = BaseUserSerializer.Meta.fields + ('password', 'security_question', 'security_answer','re_password')
+
+
+class ActivationAccountSerializer(serializers.Serializer):
+    email=serializers.EmailField()
+

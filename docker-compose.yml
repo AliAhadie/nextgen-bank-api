@@ -28,7 +28,8 @@ services:
     ports:
       - "6379:6379"
       - "6380:6380"
-    command: redis-server --appendonly yes
+    
+
 
   rabbitmq:
     image: rabbitmq:3-management
