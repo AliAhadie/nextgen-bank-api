@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CreateUserSerializer,BaseUserSerializer
 from .models import User
+from .tasks.task_email import send_activation_email
 
 # Create your views here.
 
@@ -15,6 +16,8 @@ class UserCreateView(APIView):
         serializer=self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            send_activation_email.apply_async(args=[user.id])
+
             return Response({
                 "message": "User created successfully",
                 "user_id": user.id

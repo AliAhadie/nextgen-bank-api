@@ -142,9 +142,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+# drf_spectacular settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'NextGen Bank API',
+    'DESCRIPTION': 'API documentation for NextGen Bank',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'LiCENSE': {
+        'name': 'MIT License',
+    },
+
+}
 # Celery settings
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', )
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', )
+CELERY_BROKER_URL = 'amqp://admin:admin@rabbitmq:5672//'
+
+CELERY_RESULT_BACKEND = None
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -152,3 +165,12 @@ CELERY_TIMEZONE = 'UTC'
 
 # Custom user model
 AUTH_USER_MODEL = 'authentication.User'
+
+
+# email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mailpit'
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'noreply@nextgenbank.com'

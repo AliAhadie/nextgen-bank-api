@@ -12,6 +12,7 @@ class BaseUserSerializer(serializers.ModelSerializer):
 class CreateUserSerializer(BaseUserSerializer):
     """Serializer for creating a new user."""
     password = serializers.CharField(write_only=True, required=True)
+    re_password = serializers.CharField(write_only=True, required=True)
     security_question = serializers.CharField(required=True)
     security_answer = serializers.CharField(required=True)
 
@@ -25,16 +26,18 @@ class CreateUserSerializer(BaseUserSerializer):
             raise serializers.ValidationError("Password must contain at least one letter.")
         if not any(char in '!@#$%^&*()_+' for char in attrs):
             raise serializers.ValidationError("Password must contain at least one special character.")
-        return attrs        
-
-  
+        if attrs != self.initial_data.get('re_password'):
+            raise serializers.ValidationError("Passwords do not match.")
+        return attrs
 
     def create(self, validated_data):
         """Create and return a new user."""
+        validated_data.pop('re_password', None)
         user = User.objects.create_user(**validated_data)
+       
         user.set_password(validated_data['password'])
         user.save()
         return user
 
     class Meta(BaseUserSerializer.Meta):
-        fields = BaseUserSerializer.Meta.fields + ('password', 'security_question', 'security_answer')
+        fields = BaseUserSerializer.Meta.fields + ('password', 'security_question', 'security_answer','re_password')

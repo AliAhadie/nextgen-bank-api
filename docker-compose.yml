@@ -40,23 +40,26 @@ services:
       RABBITMQ_DEFAULT_PASS: admin
       RABBITMQ_DEFAULT_VHOST: /
 
-  celery:
+  celery_worker_1:
     build: .
-    command: celery -A app worker --loglevel=info
+    container_name: celery_worker_1
     volumes:
-      - ./app/:/app
+      - ./app:/app/
+    command: celery -A app worker -Q q.email.tasks --hostname=celery_worker_1@%h -B --loglevel=info
+    env_file:
+      - ./app/dev.env
+
     depends_on:
-      - web
-      - db
-      - redis
       - rabbitmq
+      - db
+      - web
   flower:
     image: mher/flower
     container_name: flower
     ports:
       - "5555:5555"
     environment:
-      CELERY_BROKER_URL: amqp://rabbit:rabbit@rabbitmq:5672//
+      CELERY_BROKER_URL: amqp://admin:admin@rabbitmq:5672//
     depends_on:
       - rabbitmq
     restart: always
