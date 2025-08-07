@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 import uuid
 from .utils import generate_otp
@@ -33,7 +33,7 @@ class UserRole(models.TextChoices):
 
 
 """ coustom user model for the application """
-class User(AbstractBaseUser):
+class User(AbstractUser):
     id=models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -105,7 +105,7 @@ class User(AbstractBaseUser):
         blank=True,
         verbose_name=_("OTP Expiry")
     )
-
+    
     objects = UserManager()  # Assuming UserManager is defined elsewhere
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [ 'first_name', 'last_name', 'id_no', 'security_question', 'security_answer', 'role']

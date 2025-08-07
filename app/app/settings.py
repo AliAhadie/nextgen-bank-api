@@ -147,4 +147,4 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
 # Custom user model
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'authentication.User'
