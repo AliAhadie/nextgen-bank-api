@@ -20,5 +20,5 @@ app.conf.task_queues = [
 ]
 
 app.conf.task_routes = {
-    "authentication.tasks.task_email.send_activation_email": {"queue": "q.email.tasks", "routing_key": "task"},
+    "authentication.tasks.*": {"queue": "q.email.tasks", "routing_key": "task"},
 }

@@ -12,3 +12,5 @@ django-redis
 
 redis
 celery
+
+#jwt

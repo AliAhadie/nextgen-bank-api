@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,7 +34,9 @@ ALLOWED_HOSTS = []
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_spectacular',
+    
 ]
 
 DJANGO_APPS = [
@@ -141,7 +144,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # rest_framework settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.utils.CustomJWTAuthentication',
+    ),
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,    
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '150/day',
+        'anon': '100/day',
+    }
+    ,
+
+    
 }
+
+
 
 # drf_spectacular settings
 SPECTACULAR_SETTINGS = {
@@ -184,4 +202,26 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
+}
+
+
+#cookie 
+SIMPLE_JWT={
+    'AUTH_COOKIE':'access',
+    'AUTH_COOKIE_SECURE': False,  # Set to True in production with HTTPS
+    'AUTH_COOKIE_HTTP_ONLY': True,  # Prevents JavaScript access to the cookie
+    'AUTH_COOKIE_SAMESITE': 'Lax',  # Adjust as needed (Lax, Strict, None)
+    'AUTH_COOKIE_PATH': '/',  # Cookie path
+    'AUTH_COOKIE_DOMAIN': None,  # Set to your domain if needed
+    'AUTH_COOKIE_NAME': 'access',  # Name of the cookie
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # یا هر مقدار دیگری که می‌خواهید
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,  # Rotate refresh tokens on use
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist old refresh tokens after rotation
+
+    
+
 }

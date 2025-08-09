@@ -13,3 +13,13 @@ def send_activation_email(id):
     }
 
     send_mail(message['subject'], message['message'], 'noreply@nextgenbank.com', ['test@example.com'])
+
+
+@shared_task
+def send_otp_email(email, otp): 
+    """Send OTP to the user's email."""
+    subject = 'Your OTP Code'
+    message = f'Your OTP code is: {otp}'
+    from_email = 'noreply@nextgenbank.com'
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
